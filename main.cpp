@@ -490,6 +490,14 @@ unsigned long int getImageSize(const uint8_t *bitmap)
     {
         size = sizeof(Heart);
     }
+    else if(bitmap == Numbers)
+    {
+        size = sizeof(Numbers);
+    }
+    else if(bitmap == BPM)
+    {
+        size = sizeof(BPM);
+    }
     else
     {
         assert(0);
