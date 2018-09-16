@@ -37,14 +37,19 @@ void drawImage(const unsigned char* image, uint16_t* count)
 
 void nop(uint16_t* count)
 {
-    if (!(arduboy.nextFrame())) return;
     if((*count)--)
     {
     }
     else
     {
         gCurrentFrame++;
-    }
+    }  
+}
+
+void waitFrame(uint16_t* count)
+{
+    if (!(arduboy.nextFrame())) return;  
+    nop(count);
 }
 
 void frame0(uint16_t* count)
@@ -66,7 +71,7 @@ void frame2(uint16_t* count)
     const uint8_t bpmX = 94;
     const uint8_t bpmY = 32;
 
-    nop(count);
+    waitFrame(count);
     
     gVariable = random(0, 9);
     gAccumulator += gVariable;
@@ -76,7 +81,9 @@ void frame2(uint16_t* count)
 
     sprites.drawSelfMasked(bpmX, bpmY, Numbers, 8);
     sprites.drawSelfMasked(bpmX + 5, bpmY, Numbers, gVariable);
-    sprites.drawSelfMasked(bpmX-20, bpmY, BPM, 0);     
+    sprites.drawSelfMasked(bpmX-20, bpmY, BPM, 0);
+
+    arduboy.display();
 }
 
 void frame3(uint16_t* count)
