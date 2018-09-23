@@ -67,7 +67,7 @@ void addToVariable(uint16_t* variable, uint8_t value)
     *variable += value;     
 }
 
-#define TOTAL_FRAMES 11
+#define TOTAL_FRAMES 13
 
 void loop()
 {
@@ -117,35 +117,49 @@ void frame5(uint16_t* count)
     const uint8_t bpmX = 94;
     const uint8_t bpmY = 32;
 
-    drawImage(Numbers, count, bpmX, bpmY, false, 8);
-    drawImage(Numbers, count, bpmX + 5, bpmY, false, gVariable);
     drawImage(BPM, count, bpmX - 20, bpmY, false, 0);
 }
 
 void frame6(uint16_t* count)
+{ 
+    const uint8_t bpmX = 94;
+    const uint8_t bpmY = 32;
+
+    drawImage(Numbers, count, bpmX, bpmY, false, 8);
+}
+
+void frame7(uint16_t* count)
+{ 
+    const uint8_t bpmX = 94;
+    const uint8_t bpmY = 32;
+
+    drawImage(Numbers, count, bpmX + 5, bpmY, false, gVariable);    
+}
+
+void frame8(uint16_t* count)
 {
     drawImage(Heart, count, 0, 0, true, 0);
 }
 
-void frame7(uint16_t* count)
+void frame9(uint16_t* count)
 {
     randomizeVariable(&gVariable, 0, 9);
     nop(count);
 }
 
-void frame8(uint16_t* count)
+void frame10(uint16_t* count)
 {
     addToVariable(&gAccumulator, gVariable);
     nop(count);
 }
 
-void frame9(uint16_t* count)
+void frame11(uint16_t* count)
 {
     addToVariable(&gCounter, 1);   
     nop(count);    
 }
 
-void frame10(uint16_t* count)
+void frame12(uint16_t* count)
 {
     nop(count);
     if(*count != 0)
@@ -153,16 +167,18 @@ void frame10(uint16_t* count)
         *gFrames[2].count = 0;  
         *gFrames[3].count = 0; 
         *gFrames[4].count = 0;               
-        *gFrames[5].count = 20;
-        *gFrames[6].count = 20;
-        *gFrames[7].count = 0;  
-        *gFrames[8].count = 0; 
-        *gFrames[9].count = 0;         
+        *gFrames[5].count = 1;
+        *gFrames[6].count = 1;        
+        *gFrames[7].count = 20;        
+        *gFrames[8].count = 20;
+        *gFrames[9].count = 0;  
+        *gFrames[10].count = 0; 
+        *gFrames[11].count = 0;         
         gCurrentFrame = 2;
     }
     else
     {
-        gCurrentFrame = 11;
+        gCurrentFrame = 13;
     }
 }
 
@@ -177,12 +193,14 @@ void setup ()
     frameInfo info2(0, &frame2);
     frameInfo info3(0, &frame3); 
     frameInfo info4(0, &frame4);        
-    frameInfo info5(20, &frame5);
-    frameInfo info6(20, &frame6);
-    frameInfo info7(0, &frame7);
-    frameInfo info8(0, &frame8); 
-    frameInfo info9(0, &frame9); 
-    frameInfo info10(20, &frame10);
+    frameInfo info5(1, &frame5);
+    frameInfo info6(1, &frame6);    
+    frameInfo info7(20, &frame7);    
+    frameInfo info8(20, &frame8);
+    frameInfo info9(0, &frame9);
+    frameInfo info10(0, &frame10); 
+    frameInfo info11(0, &frame11); 
+    frameInfo info12(20, &frame12);
     gFrames[0] = info0;
     gFrames[1] = info1;
     gFrames[2] = info2;    
@@ -193,5 +211,7 @@ void setup ()
     gFrames[7] = info7;    
     gFrames[8] = info8;
     gFrames[9] = info9;     
-    gFrames[10] = info10;        
+    gFrames[10] = info10;  
+    gFrames[11] = info11; 
+    gFrames[12] = info12;                
 }
