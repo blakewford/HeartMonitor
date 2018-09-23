@@ -67,14 +67,19 @@ void addToVariable(uint16_t* variable, uint8_t value)
     *variable += value;     
 }
 
-#define TOTAL_FRAMES 13
+#define TOTAL_FRAMES 14
 
 void loop()
 {
     if(gCurrentFrame < TOTAL_FRAMES)
     {
+        arduboy.pollButtons();
         void (*frame)(uint16_t*) = (void (*)(uint16_t*))gFrames[gCurrentFrame].method;
         (*frame)(gFrames[gCurrentFrame].count);
+    }
+    else
+    {
+        delay(1000);
     }
 }
 
@@ -91,33 +96,37 @@ void frame0(uint16_t* count)
 
 void frame1(uint16_t* count)
 {
-    drawImage(Heart, count, 0, 0, true, 0); 
+    drawImage(Heart, count, 0, 0, false, 0);
 }
 
 void frame2(uint16_t* count)
+{
+    if(arduboy.justPressed(A_BUTTON | B_BUTTON))
+    {
+        nop(count);
+    }
+    else
+    {
+        delay(200);
+    }
+}
+
+void frame3(uint16_t* count)
 {
     randomizeVariable(&gVariable, 0, 9);
     nop(count);
 }
 
-void frame3(uint16_t* count)
+void frame4(uint16_t* count)
 {
     addToVariable(&gAccumulator, gVariable);
     nop(count);
 }
 
-void frame4(uint16_t* count)
+void frame5(uint16_t* count)
 {
     addToVariable(&gCounter, 1);
     nop(count);    
-}
-
-void frame5(uint16_t* count)
-{ 
-    const uint8_t bpmX = 94;
-    const uint8_t bpmY = 32;
-
-    drawImage(BPM, count, bpmX - 20, bpmY, false, 0);
 }
 
 void frame6(uint16_t* count)
@@ -125,7 +134,7 @@ void frame6(uint16_t* count)
     const uint8_t bpmX = 94;
     const uint8_t bpmY = 32;
 
-    drawImage(Numbers, count, bpmX, bpmY, false, 8);
+    drawImage(BPM, count, bpmX - 20, bpmY, false, 0);
 }
 
 void frame7(uint16_t* count)
@@ -133,52 +142,60 @@ void frame7(uint16_t* count)
     const uint8_t bpmX = 94;
     const uint8_t bpmY = 32;
 
-    drawImage(Numbers, count, bpmX + 5, bpmY, false, gVariable);    
+    drawImage(Numbers, count, bpmX, bpmY, false, 8);
 }
 
 void frame8(uint16_t* count)
+{ 
+    const uint8_t bpmX = 94;
+    const uint8_t bpmY = 32;
+
+    drawImage(Numbers, count, bpmX + 5, bpmY, false, gVariable);    
+}
+
+void frame9(uint16_t* count)
 {
     drawImage(Heart, count, 0, 0, true, 0);
 }
 
-void frame9(uint16_t* count)
+void frame10(uint16_t* count)
 {
     randomizeVariable(&gVariable, 0, 9);
     nop(count);
 }
 
-void frame10(uint16_t* count)
+void frame11(uint16_t* count)
 {
     addToVariable(&gAccumulator, gVariable);
     nop(count);
 }
 
-void frame11(uint16_t* count)
+void frame12(uint16_t* count)
 {
     addToVariable(&gCounter, 1);   
     nop(count);    
 }
 
-void frame12(uint16_t* count)
+void frame13(uint16_t* count)
 {
     nop(count);
     if(*count != 0)
     {
-        *gFrames[2].count = 0;  
-        *gFrames[3].count = 0; 
-        *gFrames[4].count = 0;               
-        *gFrames[5].count = 1;
-        *gFrames[6].count = 1;        
-        *gFrames[7].count = 20;        
-        *gFrames[8].count = 20;
-        *gFrames[9].count = 0;  
-        *gFrames[10].count = 0; 
-        *gFrames[11].count = 0;         
-        gCurrentFrame = 2;
+        *gFrames[3].count = 0;  
+        *gFrames[4].count = 0; 
+        *gFrames[5].count = 0;               
+        *gFrames[6].count = 1;
+        *gFrames[7].count = 1;        
+        *gFrames[8].count = 20;        
+        *gFrames[9].count = 20;
+        *gFrames[10].count = 0;  
+        *gFrames[11].count = 0; 
+        *gFrames[12].count = 0;         
+        gCurrentFrame = 3;
     }
     else
     {
-        gCurrentFrame = 13;
+        gCurrentFrame = 14;
     }
 }
 
@@ -193,14 +210,15 @@ void setup ()
     frameInfo info2(0, &frame2);
     frameInfo info3(0, &frame3); 
     frameInfo info4(0, &frame4);        
-    frameInfo info5(1, &frame5);
+    frameInfo info5(0, &frame5);
     frameInfo info6(1, &frame6);    
-    frameInfo info7(20, &frame7);    
+    frameInfo info7(1, &frame7);    
     frameInfo info8(20, &frame8);
-    frameInfo info9(0, &frame9);
+    frameInfo info9(20, &frame9);
     frameInfo info10(0, &frame10); 
     frameInfo info11(0, &frame11); 
-    frameInfo info12(20, &frame12);
+    frameInfo info12(0, &frame12);
+    frameInfo info13(20, &frame13);    
     gFrames[0] = info0;
     gFrames[1] = info1;
     gFrames[2] = info2;    
@@ -213,5 +231,6 @@ void setup ()
     gFrames[9] = info9;     
     gFrames[10] = info10;  
     gFrames[11] = info11; 
-    gFrames[12] = info12;                
+    gFrames[12] = info12; 
+    gFrames[13] = info13;                    
 }
