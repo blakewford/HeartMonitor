@@ -97,12 +97,14 @@ void frame0(uint16_t* count)
 void frame1(uint16_t* count)
 {
     drawImage(Heart, count, 0, 0, false, 0);
+    drawImage(Start, count, 50, 30, false, 0);
 }
 
 void frame2(uint16_t* count)
 {
     if(arduboy.justPressed(A_BUTTON | B_BUTTON))
     {
+        arduboy.clear();
         nop(count);
     }
     else

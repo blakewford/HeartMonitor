@@ -498,6 +498,10 @@ unsigned long int getImageSize(const uint8_t *bitmap)
     {
         size = sizeof(BPM);
     }
+    else if(bitmap == Start)
+    {
+        size = sizeof(Start);
+    }
     else
     {
         assert(0);
