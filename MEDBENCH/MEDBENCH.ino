@@ -208,7 +208,7 @@ void setup ()
     arduboy.initRandomSeed();
 
     frameInfo info0(180, &frame0);
-    frameInfo info1(180, &frame1);
+    frameInfo info1(5, &frame1);
     frameInfo info2(0, &frame2);
     frameInfo info3(0, &frame3); 
     frameInfo info4(0, &frame4);        
